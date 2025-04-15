@@ -1,58 +1,42 @@
-import { Table } from 'antd';
-import { useCrypto } from '../crypro-context';
+import { Table } from "antd";
+import { useCrypto } from "../crypro-context";
+import { mapAssetsDtoToAssets } from "../helpers/mappers";
+import { mapFilters } from "../helpers/mappers";
 
+export default function AssetsTable() {
+  const { assets } = useCrypto();
 
- export default function AssetsTable() {
+  const data = mapAssetsDtoToAssets(assets);
 
-  const { assets} = useCrypto()
-
-  const data = assets.map((a) => ({
-    key: a.id,
-    name: a.name,
-    price: a.price,
-    amount: a.amount,
-}))
-
-const filterByName = assets.map((n) => ({
-  text: n.name,
-  value: n.name
-}))
+  const filters = mapFilters(assets);
 
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Name",
+      dataIndex: "name",
       sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ['descend'],
-      filters: filterByName,
-      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      sortDirections: ["descend"],
+      filters: filters,
+      onFilter: (value, record) => record.name === value,
     },
 
     {
-      title: 'Price, $',
-      dataIndex: 'price',
-      defaultSortOrder: 'descend',
+      title: "Price, $",
+      dataIndex: "price",
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      defaultSortOrder: 'descend',
+      title: "Amount",
+      dataIndex: "amount",
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.amount - b.amount,
     },
   ];
 
-  const onChange = (pagination, filters, sorter, extra) => {
-    console.log('params', pagination, filters, sorter, extra);
-  };
-
-
-    return(<div>
-        <Table
-    pagination = {false}
-    columns={columns}
-    dataSource={data}
-    onChange={onChange}
-  />
-    </div>)
- }
+  return (
+    <div>
+      <Table pagination={false} columns={columns} dataSource={data} />
+    </div>
+  );
+}
