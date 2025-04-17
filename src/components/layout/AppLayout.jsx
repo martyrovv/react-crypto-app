@@ -4,6 +4,7 @@ import AppSider from "./AppSider";
 import AppContent from "./AppContent";
 import { useContext } from "react";
 import CryptoContext from "../../crypro-context";
+import { TotalSummaryBar } from "./TotalSummaryBar";
 
 export function AppLayout() {
   const { loading } = useContext(CryptoContext);
@@ -15,6 +16,7 @@ export function AppLayout() {
   return (
     <Layout>
       <AppHeader />
+      <TotalSummaryBar />
       <Layout>
         <AppSider />
         <AppContent />

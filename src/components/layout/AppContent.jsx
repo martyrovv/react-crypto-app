@@ -32,4 +32,4 @@ export default function AppContent() {
     </Layout.Content>
   );
 }
-//2.31.17 - графики
+
