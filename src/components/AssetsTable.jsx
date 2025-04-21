@@ -1,44 +1,42 @@
-import { Table } from 'antd';
-import { useCrypto } from '../crypro-context';
+import { Table } from "antd";
+import { useCrypto } from "../crypro-context";
+import { mapAssetsDtoToAssets } from "../helpers/mappers";
+import { mapFilters } from "../helpers/mappers";
 
-const columns = [
+export default function AssetsTable() {
+  const { assets } = useCrypto();
+
+  const data = mapAssetsDtoToAssets(assets);
+
+  const filters = mapFilters(assets);
+
+  const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
+      title: "Name",
+      dataIndex: "name",
       sorter: (a, b) => a.name.length - b.name.length,
-      sortDirections: ['descend'],
+      sortDirections: ["descend"],
+      filters: filters,
+      onFilter: (value, record) => record.name === value,
     },
+
     {
-      title: 'Price, $',
-      dataIndex: 'price',
-      defaultSortOrder: 'descend',
+      title: "Price, $",
+      dataIndex: "price",
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.price - b.price,
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      defaultSortOrder: 'descend',
+      title: "Amount",
+      dataIndex: "amount",
+      defaultSortOrder: "descend",
       sorter: (a, b) => a.amount - b.amount,
     },
   ];
- 
- export default function AssetsTable() {
 
-    const { assets} = useCrypto()
-
-    const data = assets.map((a) => ({
-        key: a.id,
-        name: a.name,
-        price: a.price,
-        amount: a.amount,
-    }))
-  
-
-    return(<div>
-        <Table
-    pagination = {false}
-    columns={columns}
-    dataSource={data}
-  />
-    </div>)
- }
+  return (
+    <div>
+      <Table pagination={false} columns={columns} dataSource={data} />
+    </div>
+  );
+}
